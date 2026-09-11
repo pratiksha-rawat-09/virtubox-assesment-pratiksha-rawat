@@ -1,8 +1,10 @@
-1. Business Problem or Opportunity to Understand: we can see the opportunity of looking at the which product is the best seller and why what mattered the  most cost , quality, design etc
-The objective is to evaluate purchase frequency, discount impact, and customer demographic trends to optimize pricing and increase customer retention.
-​
+1. Business Problem or Opportunity to Understand: first we can start with the revenue means changes in the revenue like (increased or decreased), 
+then you can move to which product is the best seller and the least seller (country, state , city wise).
+why is the product best or least seller and in which category, what is affecting (price, quantity , category).
+which age group is most active for purchases, and for which product.
+
 2. Questions Analysis Will Answer:
-​Which product categories yield the highest total transaction volume versus total net revenue?
+​which is the best seller and to increase its production, and to reduce the production of least seller.
 ​What is the purchase frequency and average spending distribution across different customer age groups?
 ​How do preferred payment methods vary across geographical regions?
 ​Which product categories exhibit the highest risk of low customer repeat purchases?
