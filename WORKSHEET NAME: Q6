@@ -1,0 +1,25 @@
+PART 1: THREE DATA-QUALITY ISSUES / LIMITATIONS / RISKS
+
+ISSUE 1: 
+the data is do not have much entities and different table to have more discriptive analysis about the following on few area i did started to taking assumptions for 
+making conclusions.
+
+ISSUE 2: 
+the dataset did felt synthetic because the difference between the sales of product and revenue percentage of few product were quit same.
+
+Identify the Issue: While User_Name is provided, there are no unique Customer_ID fields or transaction timestamps to reliably track repeat purchases versus duplicate name entries.
+
+How it affects analysis: It prevents accurate cohort analysis, customer lifetime value estimation, and distinction between new and returning buyers.
+
+How it was handled: I focused demographic and spend analysis on per-transaction order metrics (Average Order Value) rather than user-level retention metrics.
+
+
+PART 2: ADDITIONAL ANALYSIS LIMITATIONS & UNSAFE CONCLUSIONS
+
+A. Two Limitations of Your Analysis:
+Lack of Profit Margin : The dataset only tracks gross sales (Purchase_Amount), shipping fees, or return rates, net profitability cannot be directly calculated.
+Missing Customer Acquisition & Marketing Spend Data: We cannot measure Return on Ad Spend (ROAS) or Customer Acquisition Cost (CAC) because advertising channels and campaign costs are not tracked.
+B. One Conclusion That CANNOT Safely Be Made From Your Dataset:
+Unsafe Conclusion: "Marketing campaigns on Instagram are failing because the Beauty category generated the lowest sales volume."
+Why it is unsafe: The dataset contains zero information regarding marketing channels, ad spend, web traffic, or product review ratings.
+Asserting a specific marketing failure without ad impression or click-through data would be an ungrounded assumption.
