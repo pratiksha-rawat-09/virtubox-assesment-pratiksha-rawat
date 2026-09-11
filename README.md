@@ -1,7 +1,7 @@
 # E-Commerce Transaction Analysis & Business Insights Report
 
 ## 1. Executive Summary & Project Overview
-This project presents an end-to-end data analytics case study examining transactional patterns within an e-commerce platform dataset. The objective is to extract actionable insights regarding revenue seasonality, demographic target groups, product category distributions, geographic concentrations, and payment method behaviors. The findings serve to guide management toward data-backed strategic decisions.
+This assessment presents an end-to-end data analytics case study examining transactional patterns within an e-commerce platform dataset. The objective is to extract actionable insights regarding revenue seasonality, demographic target groups, product category distributions, geographic concentrations, and payment method behaviors. The findings serve to guide management toward data-backed strategic decisions.
 
 ---
 
