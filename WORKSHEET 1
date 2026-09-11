@@ -1,1 +1,12 @@
+DATASET NAME - E-Commerce Transactions Dataset
+SOURCE  AND URL - https://www.kaggle.com/datasets/smayanj/e-commerce-transactions-dataset
+​Number of rows and columns: 50,000 rows, 8 columns
 
+Brief description of the dataset: This dataset contains 50,000 e-commerce transaction records. Key fields include Transaction ID, User Name, Age, Country, Product Category, Purchase Amount, Payment Method, and Transaction Date.
+
+Why you selected this dataset: It meets the minimum threshold requirement of 50,000+ records while providing transactional details ideal for evaluating purchase behavior, profitability across product categories, and regional sales performance.
+
+What business opportunities or problems you believe the dataset could help investigate:
+​Revenue tracking and profit margin sales of product categories.
+​High customer drop-off/churn patterns based on transaction frequency.
+​Region-wise purchasing power and payment method preferences.
