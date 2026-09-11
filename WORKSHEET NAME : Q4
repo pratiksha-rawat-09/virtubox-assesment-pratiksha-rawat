@@ -36,18 +36,20 @@ FROM
 GROUP BY 
     m.overall_avg_monthly_revenue;
 
-______________________________________________________
+---------------------------------------------------------------
 Why did you Selected this insight?
 answer: It helps the company or the team to plan ahead for peak shopping months to avoid running out of stock.
 Business Impact?
 answer: Preventing stockouts and server issues during high-traffic months ensures maximum sales.
 Recommendation: Prepare inventory levels and increase web server capacity in advance before the maximan sales season begins.
 
+
+_________________________________________________________________________________________________________________________________________________________________________________
 INSIGHT 2: Key Target Demographic
 What Did You Discover? 
 answer: Customers aged 55+ generate the largest share of overall revenue. total revenue of 7555926.16 Rs.  which in percentage is 30.03%
 Evidence: 
-------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------
 #SQL_code_as_a_evidence
 
 
@@ -88,13 +90,14 @@ FROM
     demographic_summary
 ORDER BY 
     total_revenue DESC;
-  -----------------------------------------------------------------------------------------------------------------------
+  ---------------------------------------------------------
 Why Selected? 
 answer: It shows which customer group is most active, where should me the actual focus of the company or team ,helping the company spend budgets wisely.
 Business Impact: Helps in focusing on ad budgets of the most active age group improves marketing with less money spent.
 Recommendation: we can start more social media advertising toward the 55+ age demographic on platforms like Instagram and facebook and whatapp.
 
 
+____________________________________________________________________________________________________________________________________________________________________________________
 INSIGHT 3: Low Profit Margins on High Volume
 What Did You Discover? 
 answer:The "Toys" category has high order volume but low net profit.
@@ -135,16 +138,92 @@ Why Selected? High sales numbers can be misleading if the product line isn't act
 Business Impact: Adjusting discount levels can help protect profit margins without losing customers.
 Recommendation:   review supplier costs to improve profit margins.increase the margin of the product.
 
-
+____________________________________________________________________________________________________________________________________________________________
 INSIGHT 4: Sales Concentration by City
-What Did You Discover? A small number of top cities drive the majority of orders.
-Evidence: The top 3 cities account for 54% of all orders and 58% of total company revenue.
+What Did You Discover?
+answer: A small number of top cities drive the majority of orders.
+Evidence: The top 3 cities account for almost 40% of all orders.which are namely 
+France with total_order= 4993 and total_revenue = 2545739.19.
+Canada with total_order= 5082 and total_revenue = 2544335.12.
+USA with total_order= 4979 and total_revenue = 2541220.22.
+
+---------------------------------------
+#sql query
+
+WITH regional_summary AS (
+    SELECT 
+        Country,
+        COUNT(Transaction_ID) AS total_orders,
+        SUM(Purchase_Amount) AS total_regional_revenue,
+        AVG(Purchase_Amount) AS avg_order_value
+    FROM 
+        ecommerce_transactions
+    GROUP BY 
+        Country
+)
+SELECT 
+    Country,
+    total_orders,
+    ROUND(total_regional_revenue::NUMERIC, 2) AS total_revenue,
+    ROUND(avg_order_value::NUMERIC, 2) AS avg_order_value,
+    -- Calculates percentage share of total store orders
+    ROUND(
+        (total_orders::NUMERIC / SUM(total_orders) OVER () * 100), 
+    2) AS percentage_of_total_orders,
+    -- Calculates percentage share of total store revenue
+    ROUND(
+        (total_regional_revenue / SUM(total_regional_revenue) OVER () * 100)::NUMERIC, 
+    2) AS percentage_of_total_revenue
+FROM 
+    regional_summary
+ORDER BY 
+    total_revenue DESC;
+---------------------------------------
 Why Selected? Knowing where most customers live helps optimize delivery times and shipping costs.
 Business Impact: Faster shipping in core cities can increase customer satisfaction and repeat orders.
-Recommendation: Partner with local delivery hubs in these top 3 cities to offer faster fulfillment.
+Recommendation: Partner with local delivery hubs in these top 3 cities to offer faster fulfillment
+
+
+_____________________________________________________________________________________________________________________________________________________________
 INSIGHT 5: Payment Method Spending Differences
-What Did You Discover? Customers paying with Credit Cards spend more per order than Cash on Delivery (COD) users.
-Evidence: Credit Card transactions average $130 per order, compared to $75 per order for COD transactions.
+What Did You Discover? Customers paying with Cash on Delivery (COD) spend more per order than other payment method.
+Evidence: Cash on Delivery (COD) transactions average 507.03 per order.and the total revenue generated is 4276269.38
+
+----------------------------------------
+#sql query
+
+	WITH payment_summary AS (
+    SELECT 
+        Payment_Method,
+        COUNT(Transaction_ID) AS total_transactions,
+        SUM(Purchase_Amount) AS total_revenue,
+        AVG(Purchase_Amount) AS avg_order_value
+    FROM 
+        ecommerce_transactions
+    GROUP BY 
+        Payment_Method
+)
+SELECT 
+    Payment_Method,
+    total_transactions,
+    ROUND(total_revenue::NUMERIC, 2) AS total_revenue,
+    ROUND(avg_order_value::NUMERIC, 2) AS avg_order_value,
+    -- Percentage of total transactions across all payment methods
+    ROUND(
+        (total_transactions::NUMERIC / SUM(total_transactions) OVER () * 100), 
+    2) AS percentage_of_transactions,
+    -- Percentage of total revenue across all payment methods
+    ROUND(
+        (total_revenue / SUM(total_revenue) OVER () * 100)::NUMERIC, 
+    2) AS percentage_of_revenue
+FROM 
+    payment_summary
+ORDER BY 
+    avg_order_value DESC;
+
+--------------------------------------------
 Why Selected? Understanding how customers prefer to pay helps identify opportunities to increase order values.
-Business Impact: Encouraging digital payments can naturally lead to higher average cart sizes.
+also if you understand in which location people perfer COD then we can suggest them with some options
+Business Impact: We can promote digital payment,Encouraging digital payments can naturally lead to higher average cart sizes.
 Recommendation: Offer small incentives or checkout discounts for choosing credit card or digital payments.
+so that people start shifting to digital payment
