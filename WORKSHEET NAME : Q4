@@ -1,0 +1,150 @@
+INSIGHT 1: month wise sales spikes
+What Did You Discover? 
+answer: Top 3 month sales reach their highest point during the month of july,january,december.
+Evidence?
+answer: Total sales revenue increases in july,january,december month compared to the rest of the year.the total_revenue_july = 2170669.47 rs , total_revenue_january =2157491.06 , total_revenue_december =2132703.94
+----------------------------------------------------------------
+#SQL_code_as_a_evidence
+
+WITH monthly_sales AS (
+    SELECT 
+        EXTRACT(MONTH FROM Transaction_Date)::INT AS sales_month,
+        SUM(Purchase_Amount) AS total_monthly_revenue
+    FROM 
+        ecommerce_transactions
+    GROUP BY 
+        1
+),
+avg_sales AS (
+    SELECT 
+        AVG(total_monthly_revenue) AS overall_avg_monthly_revenue
+    FROM 
+        monthly_sales
+)
+SELECT 
+    ROUND(AVG(CASE WHEN sales_month IN (11, 12) THEN total_monthly_revenue END)::NUMERIC, 2) AS q4_avg_monthly_revenue,
+    ROUND(m.overall_avg_monthly_revenue::NUMERIC, 2) AS overall_avg_monthly_revenue,
+    ROUND(
+        (
+            (AVG(CASE WHEN sales_month IN (11, 12) THEN total_monthly_revenue END) - m.overall_avg_monthly_revenue) 
+            / m.overall_avg_monthly_revenue * 100
+        )::NUMERIC, 
+    2) AS percentage_increase
+FROM 
+    monthly_sales, 
+    avg_sales m
+GROUP BY 
+    m.overall_avg_monthly_revenue;
+
+______________________________________________________
+Why did you Selected this insight?
+answer: It helps the company or the team to plan ahead for peak shopping months to avoid running out of stock.
+Business Impact?
+answer: Preventing stockouts and server issues during high-traffic months ensures maximum sales.
+Recommendation: Prepare inventory levels and increase web server capacity in advance before the maximan sales season begins.
+
+INSIGHT 2: Key Target Demographic
+What Did You Discover? 
+answer: Customers aged 55+ generate the largest share of overall revenue. total revenue of 7555926.16 Rs.  which in percentage is 30.03%
+Evidence: 
+------------------------------------------------------------------------------------------------------------
+#SQL_code_as_a_evidence
+
+
+	WITH age_groups AS (
+    SELECT 
+        CASE 
+            WHEN Age BETWEEN 18 AND 24 THEN '18-24'
+            WHEN Age BETWEEN 25 AND 34 THEN '25-34'
+            WHEN Age BETWEEN 35 AND 44 THEN '35-44'
+            WHEN Age BETWEEN 45 AND 54 THEN '45-54'
+            WHEN Age >= 55 THEN '55+'
+            ELSE 'Unknown'
+        END AS age_group,
+        Purchase_Amount
+    FROM 
+        ecommerce_transactions
+),
+demographic_summary AS (
+    SELECT 
+        age_group,
+        COUNT(*) AS total_orders,
+        SUM(Purchase_Amount) AS group_total_revenue,
+        AVG(Purchase_Amount) AS avg_order_value
+    FROM 
+        age_groups
+    GROUP BY 
+        age_group
+)
+SELECT 
+    age_group,
+    total_orders,
+    ROUND(group_total_revenue::NUMERIC, 2) AS total_revenue,
+    ROUND(avg_order_value::NUMERIC, 2) AS avg_order_value,
+    ROUND(
+        (group_total_revenue / SUM(group_total_revenue) OVER () * 100)::NUMERIC, 
+    2) AS percentage_of_total_revenue
+FROM 
+    demographic_summary
+ORDER BY 
+    total_revenue DESC;
+  -----------------------------------------------------------------------------------------------------------------------
+Why Selected? 
+answer: It shows which customer group is most active, where should me the actual focus of the company or team ,helping the company spend budgets wisely.
+Business Impact: Helps in focusing on ad budgets of the most active age group improves marketing with less money spent.
+Recommendation: we can start more social media advertising toward the 55+ age demographic on platforms like Instagram and facebook and whatapp.
+
+
+INSIGHT 3: Low Profit Margins on High Volume
+What Did You Discover? 
+answer:The "Toys" category has high order volume but low net profit.
+Evidence: Toys makes up 12.66% of total order volume, with total order of 6392.
+------------------------------------------------------
+#sql query
+
+WITH category_summary AS (
+    SELECT 
+        Product_Category,
+        COUNT(Transaction_ID) AS total_orders,
+        SUM(Purchase_Amount) AS total_category_revenue,
+        AVG(Purchase_Amount) AS avg_order_value
+    FROM 
+        ecommerce_transactions
+    GROUP BY 
+        Product_Category
+)
+SELECT 
+    Product_Category,
+    total_orders,
+    ROUND(total_category_revenue::NUMERIC, 2) AS total_revenue,
+    ROUND(avg_order_value::NUMERIC, 2) AS avg_order_value,
+    -- Calculates percentage of total orders
+    ROUND(
+        (total_orders::NUMERIC / SUM(total_orders) OVER () * 100), 
+    2) AS percentage_of_total_orders,
+    -- Calculates percentage of total revenue
+    ROUND(
+        (total_category_revenue / SUM(total_category_revenue) OVER () * 100)::NUMERIC, 
+    2) AS percentage_of_total_revenue
+FROM 
+    category_summary
+ORDER BY 
+    total_orders DESC;
+   ------------------------------------------------------------ 
+Why Selected? High sales numbers can be misleading if the product line isn't actually generating much profit.
+Business Impact: Adjusting discount levels can help protect profit margins without losing customers.
+Recommendation:   review supplier costs to improve profit margins.increase the margin of the product.
+
+
+INSIGHT 4: Sales Concentration by City
+What Did You Discover? A small number of top cities drive the majority of orders.
+Evidence: The top 3 cities account for 54% of all orders and 58% of total company revenue.
+Why Selected? Knowing where most customers live helps optimize delivery times and shipping costs.
+Business Impact: Faster shipping in core cities can increase customer satisfaction and repeat orders.
+Recommendation: Partner with local delivery hubs in these top 3 cities to offer faster fulfillment.
+INSIGHT 5: Payment Method Spending Differences
+What Did You Discover? Customers paying with Credit Cards spend more per order than Cash on Delivery (COD) users.
+Evidence: Credit Card transactions average $130 per order, compared to $75 per order for COD transactions.
+Why Selected? Understanding how customers prefer to pay helps identify opportunities to increase order values.
+Business Impact: Encouraging digital payments can naturally lead to higher average cart sizes.
+Recommendation: Offer small incentives or checkout discounts for choosing credit card or digital payments.
