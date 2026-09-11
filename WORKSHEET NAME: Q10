@@ -1,0 +1,19 @@
+1.WHICH AI TOOLS YOU USED
+I utilized Google Gemini as an AI assistant throughout this analysis.
+
+2.WHAT YOU USED THEM FOR
+Sentence Rephrasing & Professional Documentation: Polishing raw business insights into clear, structured, and formal report-style documentation.
+Query Syntax Optimization & Debugging: Identifying PostgreSQL syntax requirements, such as explicit data type casting (e.g., using ::NUMERIC for rounding functions) and date-parsing functions.
+Schema & Data Gap Evaluation: Brainstorming missing data entities (such as marketing ad spend, product cost/margins, and unique customer IDs) to evaluate dataset limitations and analytical risks.
+
+3.ONE EXAMPLE WHERE AI HELPED YOU
+AI helped streamline the creation of complex PostgreSQL queries, specifically around time-series logic. 
+It provided the structural syntax to extract months and calculate percentage growth between peak months (Q4) and
+baseline yearly averages using Common Table Expressions (CTEs).
+
+4.ONE EXAMPLE WHERE YOU HAD TO VERIFY, CORRECT, OR MODIFY AN AI-GENERATED RESULT
+When generating date-parsing queries for the Transaction_Date column, the AI initially suggested using string conversion functions like TO_DATE() or TO_TIMESTAMP(). 
+However, upon testing the query on my local PostgreSQL environment, the database threw a type error (function to_timestamp(date, unknown) does not exist).
+I recognized that PostgreSQL had automatically imported my CSV date column as a native DATE type rather than a text string. I corrected the code by removing
+the redundant conversion wrapper and applying EXTRACT(MONTH FROM Transaction_Date) directly. Additionally, because AI models do not have direct access to local 
+database values, I independently verified and replaced all placeholder metrics with the actual values calculated from my execution of the SQL queries on the dataset.
